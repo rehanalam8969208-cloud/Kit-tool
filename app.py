@@ -7,10 +7,10 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = "cyber_secret_key"
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 # Max 16MB file size
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024 # 100MB Limit
 
 # ==========================================
-# HTML DESIGN (Hacker Theme)
+# HTML DESIGN (Same as before)
 # ==========================================
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -20,62 +20,24 @@ HTML_TEMPLATE = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Photo Toolkit</title>
     <style>
-        body {
-            background-color: #0d0d0d;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-        .container {
-            background: #000;
-            border: 2px solid #00ff00;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px #00ff00;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-        }
+        body { background-color: #0d0d0d; color: #00ff00; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; flex-direction: column; }
+        .container { background: #000; border: 2px solid #00ff00; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px #00ff00; width: 90%; max-width: 500px; text-align: center; }
         h1 { text-shadow: 0 0 10px #00ff00; }
-        input, select, button {
-            background: transparent;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            padding: 10px;
-            margin: 10px 0;
-            width: 100%;
-            box-sizing: border-box;
-            font-family: inherit;
-            font-size: 16px;
-        }
-        button {
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
+        input, select, button { background: transparent; border: 1px solid #00ff00; color: #00ff00; padding: 10px; margin: 10px 0; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 16px; }
+        button { cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
         button:hover { background: #00ff00; color: #000; box-shadow: 0 0 10px #00ff00; }
         .tab { display: none; }
         .active { display: block; }
         .nav-btn { width: 45%; display: inline-block; margin: 2%; }
-        .alert { color: red; font-size: 14px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>[ CYBER PHOTO ]</h1>
-        
         <div>
             <button class="nav-btn" onclick="showTab('stego')">Stego</button>
             <button class="nav-btn" onclick="showTab('glitch')">Glitch</button>
         </div>
-
-        <!-- STEGO SECTION -->
         <div id="stego" class="tab active">
             <form method="POST" action="/stego" enctype="multipart/form-data">
                 <h3>Hide / Extract Message</h3>
@@ -87,17 +49,9 @@ HTML_TEMPLATE = """
                 </select>
                 <button type="submit">Execute</button>
             </form>
-            {% if stego_msg %}
-                <div style="margin-top:20px; border:1px dashed #00ff00; padding:10px;">
-                    <b>Result:</b> {{ stego_msg }}
-                </div>
-            {% endif %}
-            {% if download_link %}
-                <a href="{{ download_link }}" download><button style="border-color: #00ffff; color: #00ffff;">Download Image</button></a>
-            {% endif %}
+            {% if stego_msg %}<div style="margin-top:20px; border:1px dashed #00ff00; padding:10px;"><b>Result:</b> {{ stego_msg }}</div>{% endif %}
+            {% if download_link %}<a href="{{ download_link }}" download><button style="border-color: #00ffff; color: #00ffff;">Download Image</button></a>{% endif %}
         </div>
-
-        <!-- GLITCH SECTION -->
         <div id="glitch" class="tab">
             <form method="POST" action="/glitch" enctype="multipart/form-data">
                 <h3>Glitch / Restore Image</h3>
@@ -109,17 +63,10 @@ HTML_TEMPLATE = """
                 </select>
                 <button type="submit">Execute</button>
             </form>
-            {% if glitch_msg %}
-                <div style="margin-top:20px; border:1px dashed #00ff00; padding:10px;">
-                    <b>Result:</b> {{ glitch_msg }}
-                </div>
-            {% endif %}
-            {% if download_link %}
-                <a href="{{ download_link }}" download><button style="border-color: #00ffff; color: #00ffff;">Download Image</button></a>
-            {% endif %}
+            {% if glitch_msg %}<div style="margin-top:20px; border:1px dashed #00ff00; padding:10px;"><b>Result:</b> {{ glitch_msg }}</div>{% endif %}
+            {% if download_link %}<a href="{{ download_link }}" download><button style="border-color: #00ffff; color: #00ffff;">Download Image</button></a>{% endif %}
         </div>
     </div>
-
     <script>
         function showTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -131,7 +78,7 @@ HTML_TEMPLATE = """
 """
 
 # ==========================================
-# HELPER FUNCTIONS (From Core Tools)
+# HELPER FUNCTIONS
 # ==========================================
 def text_to_bin(text): return ''.join(format(ord(i), '08b') for i in text)
 def bin_to_text(binary):
@@ -158,7 +105,17 @@ def stego():
     
     if not file: return render_template_string(HTML_TEMPLATE, stego_msg="File upload failed.")
     
+    # Original file ka format check karo (.jpg ya .png)
+    original_format = file.filename.split('.')[-1].lower()
+    if original_format not in ['jpg', 'jpeg', 'png']:
+        original_format = 'png' # Default
+        
     img = Image.open(file).convert('RGB')
+    
+    # --- FAST PROCESSING FIX ---
+    width, height = img.size
+    if width > 1500 or height > 1500:
+        img.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
     
     if action == 'hide':
         if not message: return render_template_string(HTML_TEMPLATE, stego_msg="Message is empty.")
@@ -180,10 +137,17 @@ def stego():
             if data_index >= len(binary_msg): break
                 
         img_io = io.BytesIO()
-        img.save(img_io, 'PNG')
+        # SMART SAVE: Agar jpg tha toh jpg mein save karo (Quality 85%)
+        if original_format in ['jpg', 'jpeg']:
+            img.save(img_io, 'JPEG', quality=85)
+            mime = 'image/jpeg'
+        else:
+            img.save(img_io, 'PNG')
+            mime = 'image/png'
+            
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
-        link = f"data:image/png;base64,{b64}"
+        link = f"data:{mime};base64,{b64}"
         return render_template_string(HTML_TEMPLATE, stego_msg="Message Hidden Successfully!", download_link=link)
 
     elif action == 'extract':
@@ -206,6 +170,11 @@ def glitch():
     
     if not file or not key: return render_template_string(HTML_TEMPLATE, glitch_msg="Missing File or Key.")
     
+    # Original file ka format check karo
+    original_format = file.filename.split('.')[-1].lower()
+    if original_format not in ['jpg', 'jpeg', 'png']:
+        original_format = 'png'
+        
     img = Image.open(file).convert('RGB')
     width, height = img.size
     
@@ -222,11 +191,18 @@ def glitch():
         new_img.putdata(new_pixels)
         
         img_io = io.BytesIO()
-        new_img.save(img_io, 'PNG')
+        # SMART SAVE
+        if original_format in ['jpg', 'jpeg']:
+            new_img.save(img_io, 'JPEG', quality=85)
+            mime = 'image/jpeg'
+        else:
+            new_img.save(img_io, 'PNG')
+            mime = 'image/png'
+            
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
-        link = f"data:image/png;base64,{b64}"
-        return render_template_string(HTML_TEMPLATE, glitch_msg="Image Glitched Successfully! Remember the Key.", download_link=link)
+        link = f"data:{mime};base64,{b64}"
+        return render_template_string(HTML_TEMPLATE, glitch_msg="Image Glitched Successfully!", download_link=link)
 
     elif action == 'restore':
         glitched_pixels = list(img.getdata())
@@ -241,12 +217,18 @@ def glitch():
         new_img.putdata(original_pixels)
         
         img_io = io.BytesIO()
-        new_img.save(img_io, 'PNG')
+        # SMART SAVE
+        if original_format in ['jpg', 'jpeg']:
+            new_img.save(img_io, 'JPEG', quality=85)
+            mime = 'image/jpeg'
+        else:
+            new_img.save(img_io, 'PNG')
+            mime = 'image/png'
+            
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
-        link = f"data:image/png;base64,{b64}"
+        link = f"data:{mime};base64,{b64}"
         return render_template_string(HTML_TEMPLATE, glitch_msg="Image Restored Successfully!", download_link=link)
 
 if __name__ == '__main__':
-    print("[+] Server Started! Apne browser mein kholo: http://127.0.0.1:8000")
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run(host='0.0.0.0', port=8000)
