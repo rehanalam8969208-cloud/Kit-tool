@@ -11,17 +11,24 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # ==========================================
-# PREMIUM iOS GLASSMORPHISM CSS
+# ANDROID 17 GLASSMORPHISM (MATERIAL YOU) CSS
 # ==========================================
 BASE_CSS = """
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+    
     :root {
-        --glass-bg: rgba(255, 255, 255, 0.15);
-        --glass-border: rgba(255, 255, 255, 0.3);
-        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-        --text-primary: #ffffff;
-        --text-secondary: rgba(255, 255, 255, 0.7);
-        --accent: #007aff;
+        /* Android 17 Concept Colors */
+        --bg-color: #09090b;
+        --glass-surface: rgba(24, 24, 27, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-blur: blur(30px);
+        --text-primary: #f4f4f5;
+        --text-secondary: #a1a1aa;
+        --accent-color: #a8c7fa; /* Material You Blue */
+        --accent-bg: rgba(168, 199, 250, 0.15);
+        --radius-large: 28px;
+        --radius-pill: 999px;
     }
 
     * { 
@@ -29,34 +36,30 @@ BASE_CSS = """
         margin: 0; 
         padding: 0; 
         -webkit-tap-highlight-color: transparent; 
+        font-family: 'Outfit', sans-serif;
     }
     
     body {
-        background: linear-gradient(45deg, #100e17, #1a1a2e, #16213e, #0f3460);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
+        background: var(--bg-color);
+        background-image: 
+            radial-gradient(circle at 15% 50%, rgba(168, 199, 250, 0.08), transparent 25%),
+            radial-gradient(circle at 85% 30%, rgba(168, 199, 250, 0.05), transparent 25%);
         color: var(--text-primary);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         padding-bottom: 90px;
-    }
-
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        overflow-x: hidden;
     }
 
     /* --- HEADER --- */
     .app-header {
         width: 100%;
-        background: rgba(20, 20, 30, 0.4);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: rgba(9, 9, 11, 0.7);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border-bottom: 1px solid var(--glass-border);
-        padding: 15px 20px;
+        padding: 16px 24px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -64,193 +67,205 @@ BASE_CSS = """
         top: 0;
         z-index: 100;
     }
-    .app-header h1 { 
-        font-size: 20px; 
-        font-weight: 700; 
+    .header-left h1 { 
+        font-size: 22px; 
+        font-weight: 600; 
         letter-spacing: 0.5px;
     }
-    .app-header .sub { 
-        font-size: 11px; 
+    .header-left .sub { 
+        font-size: 12px; 
         color: var(--text-secondary); 
-        margin-top: 2px;
+        font-weight: 400;
     }
+    .menu-btn {
+        font-size: 24px;
+        color: var(--text-primary);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        background: transparent;
+        transition: 0.3s;
+    }
+    .menu-btn:active { background: rgba(255,255,255,0.1); }
     
     /* --- MAIN CONTENT AREA --- */
     .content {
         flex: 1;
-        padding: 20px;
+        padding: 24px 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
-    /* --- MODULE CARD (Glass Form Area) --- */
+    /* --- MODULE CARD (Android Glass Form) --- */
     .module-card {
         width: 100%;
         max-width: 450px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        background: var(--glass-surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 25px;
-        box-shadow: var(--glass-shadow);
-        animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border-radius: var(--radius-large);
+        padding: 28px 24px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        animation: scaleUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .module-header { 
         display: flex; 
         align-items: center; 
-        gap: 15px; 
-        margin-bottom: 25px; 
+        gap: 16px; 
+        margin-bottom: 30px; 
     }
     .module-icon { 
-        width: 50px; 
-        height: 50px; 
-        background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
-        border: 1px solid var(--glass-border); 
-        border-radius: 16px; 
+        width: 54px; 
+        height: 54px; 
+        background: var(--accent-bg);
+        border: 1px solid rgba(168, 199, 250, 0.2); 
+        border-radius: 20px; 
         display: flex; 
         justify-content: center; 
         align-items: center; 
         font-size: 24px; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        color: var(--accent-color);
     }
-    .module-title h2 { font-size: 20px; font-weight: 600; }
+    .module-title h2 { font-size: 22px; font-weight: 600; }
     .module-title p { font-size: 13px; color: var(--text-secondary); margin-top: 4px;}
 
     /* --- FORM ELEMENTS --- */
-    .form-group { margin-bottom: 20px; }
+    .form-group { margin-bottom: 22px; }
     .form-group label { 
         display: block; 
-        margin-bottom: 8px; 
+        margin-bottom: 10px; 
         font-size: 13px; 
         color: var(--text-secondary); 
         font-weight: 500;
+        padding-left: 4px;
     }
     .input-wrapper { 
         display: flex; 
-        background: rgba(0, 0, 0, 0.2); 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        border-radius: 14px; 
+        background: rgba(0, 0, 0, 0.3); 
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+        border-radius: 16px; 
         overflow: hidden; 
         transition: all 0.3s ease;
     }
     .input-wrapper:focus-within {
-        border-color: rgba(255, 255, 255, 0.5);
-        background: rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-color);
+        background: rgba(0, 0, 0, 0.5);
     }
     .input-icon { 
-        padding: 14px; 
+        padding: 16px; 
         display: flex;
         align-items: center;
         justify-content: center;
+        color: var(--text-secondary);
+        font-size: 16px;
     }
+    .input-wrapper:focus-within .input-icon { color: var(--accent-color); }
     
     input[type="text"], input[type="file"] {
         width: 100%; 
         background: transparent; 
         border: none; 
-        color: #fff; 
-        padding: 14px 14px 14px 0;
+        color: var(--text-primary); 
+        padding: 16px 16px 16px 0;
         font-family: inherit; 
         outline: none; 
         font-size: 15px;
     }
     input[type="file"]::file-selector-button { 
-        background: var(--glass-bg); 
-        color: #fff; 
+        background: var(--glass-surface); 
+        color: var(--text-primary); 
         border: 1px solid var(--glass-border); 
-        border-radius: 8px;
-        padding: 6px 12px; 
-        margin-right: 10px;
+        border-radius: var(--radius-pill);
+        padding: 8px 16px; 
+        margin-right: 12px;
         cursor: pointer; 
         font-weight: 500; 
         transition: 0.2s;
     }
 
-    /* --- RADIO BUTTONS (iOS Segmented Style) --- */
+    /* --- RADIO BUTTONS (Material 3 Style) --- */
     .radio-group { 
         display: flex; 
-        gap: 10px; 
+        gap: 12px; 
         margin-top: 10px; 
-        background: rgba(0,0,0,0.2);
-        padding: 4px;
-        border-radius: 12px;
     }
     .radio-group label { 
         flex: 1;
         text-align: center;
-        padding: 10px;
+        padding: 14px;
         cursor: pointer; 
         font-size: 14px; 
         font-weight: 500;
         color: var(--text-secondary); 
-        border-radius: 10px;
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 16px;
         transition: 0.3s;
     }
     .radio-group input[type="radio"] { display: none; }
-    .radio-group input[type="radio"]:checked + span { 
-        color: #fff; 
-    }
     .radio-group label:has(input[type="radio"]:checked) {
-        background: rgba(255, 255, 255, 0.15);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background: var(--accent-bg);
+        border-color: var(--accent-color);
+        color: var(--accent-color);
     }
 
     /* --- SUBMIT BUTTON --- */
     .action-btn {
         width: 100%; 
-        background: rgba(255, 255, 255, 0.9); 
-        color: #000; 
+        background: var(--accent-color); 
+        color: #09090b; 
         border: none; 
-        padding: 16px;
-        font-family: inherit; 
+        padding: 18px;
         font-size: 16px; 
         font-weight: 600;
         cursor: pointer; 
-        border-radius: 14px;
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); 
-        transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        border-radius: var(--radius-pill);
+        margin-top: 24px;
+        transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .action-btn:active { transform: scale(0.96); background: #fff; }
+    .action-btn:active { transform: scale(0.96); }
 
     /* --- RESULT BOX --- */
     .result-box { 
-        margin-top: 25px; 
-        background: rgba(0, 0, 0, 0.2); 
+        margin-top: 24px; 
+        background: rgba(0, 0, 0, 0.3); 
         border: 1px solid var(--glass-border); 
-        padding: 18px; 
-        border-radius: 16px; 
+        padding: 20px; 
+        border-radius: 20px; 
         font-size: 14px; 
         text-align: center;
     }
     .download-btn { 
         display: block; 
-        margin-top: 15px; 
-        background: var(--glass-bg); 
+        margin-top: 16px; 
+        background: rgba(255,255,255,0.1); 
         border: 1px solid var(--glass-border); 
-        color: #fff; 
-        padding: 14px; 
+        color: var(--text-primary); 
+        padding: 16px; 
         text-align: center; 
         text-decoration: none; 
-        border-radius: 12px; 
+        border-radius: var(--radius-pill); 
         font-weight: 500;
+        transition: 0.2s;
     }
+    .download-btn:active { background: rgba(255,255,255,0.15); }
 
     /* --- BOTTOM NAVIGATION BAR --- */
     .bottom-nav {
         position: fixed;
         bottom: 0; left: 0; width: 100%;
-        background: rgba(20, 20, 30, 0.65);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        border-top: 1px solid rgba(255,255,255,0.1);
+        background: rgba(9, 9, 11, 0.85);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-top: 1px solid var(--glass-border);
         display: flex;
         justify-content: space-around;
-        padding: 15px 0 calc(15px + env(safe-area-inset-bottom));
-        z-index: 100;
+        padding: 16px 0 calc(16px + env(safe-area-inset-bottom));
+        z-index: 99;
     }
 
     .nav-item {
@@ -259,35 +274,68 @@ BASE_CSS = """
         align-items: center;
         text-decoration: none;
         color: var(--text-secondary);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 500;
         transition: 0.3s;
-        cursor: pointer;
+        gap: 6px;
     }
     
     .nav-icon {
-        font-size: 22px;
-        margin-bottom: 4px;
-        transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        opacity: 0.7;
+        font-size: 20px;
+        padding: 8px 20px;
+        border-radius: var(--radius-pill);
+        transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     /* Active State for Nav */
-    .nav-item.active { color: #fff; }
+    .nav-item.active { color: var(--text-primary); }
     .nav-item.active .nav-icon { 
-        transform: translateY(-4px) scale(1.1); 
-        opacity: 1;
+        background: var(--accent-bg);
+        color: var(--accent-color);
     }
 
-    @keyframes fadeUp { 
-        from { opacity: 0; transform: translateY(30px); } 
-        to { opacity: 1; transform: translateY(0); } 
+    /* --- SIDE DRAWER (MENU) --- */
+    .menu-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+        z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s;
+    }
+    .menu-overlay.active { opacity: 1; visibility: visible; }
+    
+    .side-drawer {
+        position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
+        background: rgba(18, 18, 22, 0.85);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-left: 1px solid var(--glass-border);
+        z-index: 1001; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        padding: 24px; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        overflow-y: auto;
+    }
+    .side-drawer.active { right: 0; }
+    
+    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .drawer-header h2 { font-size: 20px; font-weight: 600; }
+    .close-btn { font-size: 24px; color: var(--text-secondary); cursor: pointer; padding: 5px; }
+    
+    .drawer-section { margin-bottom: 30px; }
+    .drawer-section h3 { font-size: 14px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .drawer-section p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    
+    .contact-list { list-style: none; }
+    .contact-list li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-primary); margin-bottom: 16px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+    .contact-list i { color: var(--accent-color); font-size: 16px; width: 20px; text-align: center; }
+    .contact-list a { color: var(--text-primary); text-decoration: none; }
+
+    @keyframes scaleUp { 
+        from { opacity: 0; transform: scale(0.95) translateY(10px); } 
+        to { opacity: 1; transform: scale(1) translateY(0); } 
     }
 </style>
 """
 
 # ==========================================
-# HTML TEMPLATE (Added Meta Viewport & Cleaned tags)
+# HTML TEMPLATE
 # ==========================================
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -295,7 +343,9 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tools</title>
+    <title>Utility Tools</title>
+    <!-- FontAwesome for Professional Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     """ + BASE_CSS + """
 </head>
 <body>
@@ -306,6 +356,45 @@ HTML_TEMPLATE = """
         <h1>Utility Tools</h1>
         <div class="sub">Secure Module</div>
     </div>
+    <div class="menu-btn" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</div>
+
+<!-- SIDE DRAWER MENU -->
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+<div class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+        <h2>App Menu</h2>
+        <i class="fa-solid fa-xmark close-btn" onclick="toggleMenu()"></i>
+    </div>
+    
+    <div class="drawer-section">
+        <h3>About Us</h3>
+        <p>Welcome to Utility Tools. We provide state-of-the-art, secure modules for steganography, image pixel manipulation (glitch), and highly encrypted file sharing. Our mission is to prioritize your privacy and data security through futuristic toolsets.</p>
+    </div>
+
+    <div class="drawer-section">
+        <h3>Contact Us</h3>
+        <ul class="contact-list">
+            <li>
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Developer: Rehan</span>
+            </li>
+            <li>
+                <i class="fa-solid fa-phone"></i>
+                <span>+91 8271162035</span>
+            </li>
+            <li>
+                <i class="fa-solid fa-envelope"></i>
+                <span style="font-size: 12px; word-break: break-all;">rehanalam8969208@gmail.com</span>
+            </li>
+            <li>
+                <i class="fa-brands fa-telegram"></i>
+                <a href="https://t.me/REHAN_OWNER" target="_blank">t.me/REHAN_OWNER</a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -314,20 +403,32 @@ HTML_TEMPLATE = """
     <!-- STEGO MODULE -->
     <div class="module-card">
         <div class="module-header">
-            <div class="module-icon">📸</div>
+            <div class="module-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="module-title"><h2>Steganography</h2><p>Hide or Extract Data</p></div>
         </div>
         <form method="POST" action="/stego" enctype="multipart/form-data">
-            <div class="form-group"><label>Select Image</label><div class="input-wrapper"><span class="input-icon">📁</span><input type="file" name="image" required></div></div>
-            <div class="form-group"><label>Secret Message</label><div class="input-wrapper"><span class="input-icon">💬</span><input type="text" name="message" placeholder="Enter payload..."></div></div>
+            <div class="form-group">
+                <label>Select Image</label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fa-regular fa-image"></i></span>
+                    <input type="file" name="image" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Secret Message</label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fa-regular fa-comment-dots"></i></span>
+                    <input type="text" name="message" placeholder="Enter payload...">
+                </div>
+            </div>
             <div class="radio-group">
                 <label><input type="radio" name="action" value="hide" checked><span>Hide Data</span></label>
                 <label><input type="radio" name="action" value="extract"><span>Extract Data</span></label>
             </div>
-            <button type="submit" class="action-btn" style="margin-top:20px;">Execute</button>
+            <button type="submit" class="action-btn">Execute Protocol</button>
         </form>
         {% if result and result_type == 'stego' %}
-        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download class="download-btn">Save Image</a>{% endif %}</div>
+        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
         {% endif %}
     </div>
     
@@ -335,20 +436,32 @@ HTML_TEMPLATE = """
     <!-- GLITCH MODULE -->
     <div class="module-card">
         <div class="module-header">
-            <div class="module-icon">⚡</div>
+            <div class="module-icon"><i class="fa-solid fa-bolt"></i></div>
             <div class="module-title"><h2>Glitch Module</h2><p>Corrupt or Restore Pixels</p></div>
         </div>
         <form method="POST" action="/glitch" enctype="multipart/form-data">
-            <div class="form-group"><label>Encryption Key</label><div class="input-wrapper"><span class="input-icon">🔑</span><input type="text" name="key" placeholder="Enter key..." required></div></div>
-            <div class="form-group"><label>Select Image</label><div class="input-wrapper"><span class="input-icon">📁</span><input type="file" name="image" required></div></div>
+            <div class="form-group">
+                <label>Encryption Key</label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fa-solid fa-key"></i></span>
+                    <input type="text" name="key" placeholder="Enter security key..." required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Select Image</label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fa-regular fa-image"></i></span>
+                    <input type="file" name="image" required>
+                </div>
+            </div>
             <div class="radio-group">
                 <label><input type="radio" name="action" value="glitch" checked><span>Glitch</span></label>
                 <label><input type="radio" name="action" value="restore"><span>Restore</span></label>
             </div>
-            <button type="submit" class="action-btn" style="margin-top:20px;">Apply</button>
+            <button type="submit" class="action-btn">Apply Effect</button>
         </form>
         {% if result and result_type == 'glitch' %}
-        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download class="download-btn">Save Image</a>{% endif %}</div>
+        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
         {% endif %}
     </div>
 
@@ -356,20 +469,26 @@ HTML_TEMPLATE = """
     <!-- FILE SHARE MODULE -->
     <div class="module-card">
         <div class="module-header">
-            <div class="module-icon">☁️</div>
+            <div class="module-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
             <div class="module-title"><h2>File Share</h2><p>Secure File Transfer (20MB)</p></div>
         </div>
         <form method="POST" action="/upload" enctype="multipart/form-data">
-            <div class="form-group"><label>Select File</label><div class="input-wrapper"><span class="input-icon">📁</span><input type="file" name="file" required></div></div>
-            <button type="submit" class="action-btn" style="margin-top:20px;">Upload & Generate Link</button>
+            <div class="form-group">
+                <label>Select File</label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fa-regular fa-folder-open"></i></span>
+                    <input type="file" name="file" required>
+                </div>
+            </div>
+            <button type="submit" class="action-btn">Upload & Generate Link</button>
         </form>
         {% if share_link %}
         <div class="result-box">
-            <div style="font-size:12px; color:rgba(255,255,255,0.7);">Link Generated:</div>
-            <div style="margin-top:10px; background:rgba(0,0,0,0.3); padding:12px; word-break:break-all; border-radius:10px;">
-                <a href="{{ share_link }}" target="_blank" style="color:#007aff; text-decoration:none; font-weight:500;">{{ share_link }}</a>
+            <div style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">Link Generated Successfully:</div>
+            <div style="background:rgba(0,0,0,0.4); padding:16px; word-break:break-all; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                <a href="{{ share_link }}" target="_blank" style="color:var(--accent-color); text-decoration:none; font-weight:500;">{{ share_link }}</a>
             </div>
-            <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:8px;">(One-Time Download Link)</div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:10px;"><i class="fa-solid fa-clock-rotate-left"></i> One-Time Download Link</div>
         </div>
         {% endif %}
     </div>
@@ -379,18 +498,28 @@ HTML_TEMPLATE = """
 <!-- BOTTOM NAVIGATION BAR -->
 <div class="bottom-nav">
     <a href="/?tab=stego" class="nav-item {% if active_tab == 'stego' %}active{% endif %}">
-        <div class="nav-icon">📸</div>
+        <div class="nav-icon"><i class="fa-solid fa-camera-retro"></i></div>
         <div>Stego</div>
     </a>
     <a href="/?tab=glitch" class="nav-item {% if active_tab == 'glitch' %}active{% endif %}">
-        <div class="nav-icon">⚡</div>
+        <div class="nav-icon"><i class="fa-solid fa-bolt"></i></div>
         <div>Glitch</div>
     </a>
     <a href="/?tab=share" class="nav-item {% if active_tab == 'share' %}active{% endif %}">
-        <div class="nav-icon">☁️</div>
+        <div class="nav-icon"><i class="fa-solid fa-cloud"></i></div>
         <div>Share</div>
     </a>
 </div>
+
+<script>
+    // Script for Side Drawer Menu
+    function toggleMenu() {
+        const overlay = document.getElementById('menuOverlay');
+        const drawer = document.getElementById('sideDrawer');
+        overlay.classList.toggle('active');
+        drawer.classList.toggle('active');
+    }
+</script>
 
 </body>
 </html>
@@ -453,7 +582,7 @@ def stego():
         else: img.save(img_io, 'PNG'); mime = 'image/png'
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
-        return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Success: Payload injected.", download_link=f"data:{mime};base64,{b64}", result_type='stego')
+        return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Success: Payload injected securely.", download_link=f"data:{mime};base64,{b64}", result_type='stego')
     elif action == 'extract':
         pixels = img.load()
         binary_data = ""
@@ -462,7 +591,7 @@ def stego():
                 r, g, b = pixels[x, y]
                 binary_data += str(r & 1) + str(g & 1) + str(b & 1)
                 if binary_data.endswith('1111111111111110'):
-                    return render_template_string(HTML_TEMPLATE, active_tab='stego', result=f"Decrypted Data:<br><span style='color:#007aff; font-size:18px; font-weight:600; margin-top:8px; display:inline-block;'>\"{bin_to_text(binary_data[:-16])}\"</span>", result_type='stego')
+                    return render_template_string(HTML_TEMPLATE, active_tab='stego', result=f"Decrypted Data:<br><span style='color:var(--accent-color); font-size:18px; font-weight:600; margin-top:10px; display:inline-block;'>\"{bin_to_text(binary_data[:-16])}\"</span>", result_type='stego')
         return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Error: No hidden data found.", result_type='stego')
 
 # GLITCH
