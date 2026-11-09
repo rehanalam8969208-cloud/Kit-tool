@@ -6,10 +6,10 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = "cyber_secret_key"
-app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024 # 100MB Limit
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 # ==========================================
-# FULLSCREEN HACKER UI WITH MATRIX EFFECT
+# FULLSCREEN DASHBOARD CSS
 # ==========================================
 BASE_CSS = """
 <style>
@@ -18,198 +18,165 @@ BASE_CSS = """
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
-        background-color: #030a03;
+        background-color: #050505;
         color: #00ff41;
         font-family: 'Share Tech Mono', monospace;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        /* Cyber Grid Background */
         background-image: 
-            linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-        background-size: 30px 30px;
-        overflow-x: hidden;
+            linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
     }
 
-    /* MATRIX HEADER EFFECT */
+    /* --- HEADER (Full Width) --- */
     .cyber-header {
         width: 100%;
-        height: 180px;
         background: #000;
         border-bottom: 2px solid #00ff41;
-        position: relative;
+        padding: 15px 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 30px;
-        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
     }
 
-    /* CSS Matrix Code effect */
-    .matrix-bg {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: repeating-linear-gradient(0deg, transparent, transparent 2px, #00ff41 3px);
-        opacity: 0.1;
-        animation: scan 10s linear infinite;
-    }
-    @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 100vh; } }
-
-    .header-left { z-index: 2; }
     .header-left h1 {
         font-family: 'Orbitron', sans-serif;
-        font-size: 32px;
+        font-size: 28px;
         font-style: italic;
         color: #fff;
         text-shadow: 0 0 10px #00ff41;
         line-height: 1;
     }
     .header-left h1 span { color: #00ff41; }
-    .header-left .sub { font-size: 12px; color: #00ff41; letter-spacing: 2px; margin-bottom: 15px; }
-    
-    .status-box {
-        background: rgba(0,0,0,0.8);
-        border: 1px solid #00ff41;
-        padding: 8px;
-        font-size: 11px;
-        display: inline-block;
-        box-shadow: inset 0 0 10px rgba(0,255,65,0.2);
-    }
-    .status-box div { margin-bottom: 4px; }
-    .status-box span { color: #fff; }
+    .header-left .sub { font-size: 12px; color: #00ff41; letter-spacing: 2px; }
 
-    .header-right {
-        z-index: 2;
-        text-align: right;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 16px;
-        color: #00ff41;
-        text-shadow: 0 0 8px #00ff41;
-        line-height: 1.6;
-    }
+    .header-right { text-align: right; color: #00ff41; font-size: 14px; line-height: 1.5; font-weight: bold; }
 
-    /* MAIN CONTAINER FULL WIDTH */
-    .main-container {
+    /* --- MAIN DASHBOARD (Fills remaining screen) --- */
+    .dashboard {
         flex: 1;
-        width: 100%;
-        max-width: 800px; /* PC par bhi beech mein rahe */
-        margin: 0 auto;
-        padding: 30px 20px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        padding: 20px;
+        max-width: 1200px; /* Wide screen support */
+        margin: 0 auto;
+        width: 100%;
+        gap: 20px;
     }
 
-    /* MODULE CARDS */
-    .module-card {
-        border: 1px solid #00ff41;
-        background: rgba(0, 255, 65, 0.05);
-        padding: 20px;
-        margin-bottom: 25px;
-        border-radius: 5px;
-        position: relative;
+    /* Status Bar */
+    .status-bar {
         display: flex;
         gap: 20px;
-        align-items: center;
-        box-shadow: 0 0 20px rgba(0,255,65,0.1);
+        background: rgba(0,255,65,0.1);
+        border: 1px solid #00ff41;
+        padding: 10px 20px;
+        font-size: 12px;
+        justify-content: center;
+    }
+    .status-bar span { color: #fff; }
+
+    /* Modules Container */
+    .modules-container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        flex: 1; /* Take full height */
     }
 
-    .module-card::before, .module-card::after {
-        content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid #00ff41;
+    /* Individual Module Card */
+    .module-card {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.85);
+        border: 2px solid #00ff41;
+        border-radius: 8px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
     }
-    .module-card::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-    .module-card::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
+    .module-card.glitch-card { border-color: #00ffff; box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+
+    .module-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+    .module-header.glitch-header { border-color: #005555; }
+    
     .module-icon {
-        width: 90px; height: 90px; border: 2px solid #00ff41; border-radius: 50%;
-        display: flex; justify-content: center; align-items: center; font-size: 35px;
-        background: rgba(0, 255, 65, 0.1); box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.5);
-        flex-shrink: 0;
+        width: 50px; height: 50px; border: 2px solid #00ff41; border-radius: 50%;
+        display: flex; justify-content: center; align-items: center; font-size: 24px; background: rgba(0,255,65,0.1);
     }
+    .glitch-card .module-icon { border-color: #00ffff; background: rgba(0,255,255,0.1); }
 
-    .module-form { flex: 1; }
-    .module-form h2 {
-        font-family: 'Orbitron', sans-serif; font-size: 22px; color: #00ff41;
-        margin-bottom: 5px; text-shadow: 0 0 5px #00ff41;
-    }
-    .module-form p { font-size: 12px; color: #00aa2b; margin-bottom: 15px; font-style: italic;}
+    .module-title h2 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #00ff41; }
+    .glitch-card .module-title h2 { color: #00ffff; }
+    .module-title p { font-size: 12px; color: #00aa2b; font-style: italic; }
 
-    /* Custom Inputs */
-    .input-group {
-        display: flex; align-items: center; background: #000; border: 1px solid #00ff41;
-        margin-bottom: 12px; padding: 0;
-    }
-    .input-icon {
-        padding: 12px; background: rgba(0, 255, 65, 0.2); border-right: 1px solid #00ff41; font-size: 18px;
-    }
-    input[type="file"], input[type="text"] {
-        width: 100%; background: transparent; border: none; color: #fff; padding: 12px;
-        font-family: 'Share Tech Mono', monospace; outline: none; font-size: 15px;
+    /* Form Styles */
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-size: 12px; color: #00aa2b; text-transform: uppercase; letter-spacing: 1px; }
+    
+    .input-wrapper { display: flex; background: #000; border: 1px solid #00ff41; border-radius: 4px; }
+    .glitch-card .input-wrapper { border-color: #00ffff; }
+    .input-icon { padding: 10px; background: rgba(0,255,65,0.2); border-right: 1px solid #00ff41; }
+    .glitch-card .input-icon { background: rgba(0,255,255,0.2); border-color: #00ffff; }
+
+    input[type="text"], input[type="file"] {
+        width: 100%; background: transparent; border: none; color: #fff; padding: 10px;
+        font-family: 'Share Tech Mono', monospace; outline: none; font-size: 14px;
     }
     input[type="file"]::file-selector-button {
-        background: #00ff41; color: #000; border: none; padding: 6px 12px; cursor: pointer; font-weight: bold; margin-right: 10px;
+        background: #00ff41; color: #000; border: none; padding: 5px 10px; cursor: pointer; font-weight: bold;
     }
 
-    /* Radio Buttons */
-    .radio-group { display: flex; gap: 20px; margin-bottom: 20px; font-size: 15px; align-items: center;}
-    .radio-group label { display: flex; align-items: center; cursor: pointer; }
+    /* Custom Radios */
+    .radio-group { display: flex; gap: 15px; margin-bottom: 20px; }
+    .radio-group label { display: flex; align-items: center; cursor: pointer; font-size: 14px; color: #fff;}
     .radio-group input[type="radio"] { display: none; }
-    .radio-btn {
-        width: 18px; height: 18px; border: 2px solid #00ff41; border-radius: 50%; margin-right: 8px; display: inline-block;
-    }
-    .radio-group input[type="radio"]:checked + .radio-btn { background: #00ff41; box-shadow: 0 0 10px #00ff41; }
+    .radio-btn { width: 14px; height: 14px; border: 2px solid #00ff41; border-radius: 50%; margin-right: 6px; }
+    .glitch-card .radio-btn { border-color: #00ffff; }
+    .radio-group input[type="radio"]:checked + .radio-btn { background: #00ff41; }
+    .glitch-card .radio-group input[type="radio"]:checked + .radio-btn { background: #00ffff; }
 
-    /* Action Buttons */
+    /* Action Button */
     .action-btn {
         width: 100%; background: #00ff41; color: #000; border: none; padding: 15px;
-        font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900;
-        cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
-        display: flex; justify-content: center; align-items: center; gap: 10px;
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5); transition: all 0.3s;
-        clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; cursor: pointer;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        margin-top: auto; /* Push to bottom of card */
     }
-    .action-btn:hover { background: #fff; box-shadow: 0 0 25px #00ff41; }
+    .action-btn:hover { background: #fff; box-shadow: 0 0 20px #00ff41; }
+    .glitch-card .action-btn { background: #00ffff; }
+    .glitch-card .action-btn:hover { background: #fff; box-shadow: 0 0 20px #00ffff; }
 
-    /* Result Box */
-    .result-box {
-        background: #000; border-left: 4px solid #00ff41; padding: 15px;
-        font-size: 14px; margin-bottom: 15px; animation: slideIn 0.3s ease-out;
-        word-break: break-all;
-    }
-    .download-btn {
-        display: block; width: 100%; background: transparent; border: 1px solid #00ffff; color: #00ffff;
-        padding: 15px; text-align: center; text-decoration: none; margin-bottom: 20px; text-transform: uppercase;
-        box-shadow: 0 0 10px rgba(0,255,255,0.3);
-    }
+    /* Result Display */
+    .result-box { margin-top: 15px; background: #000; border-left: 4px solid #00ff41; padding: 15px; font-size: 13px; animation: fadeIn 0.3s; }
+    .glitch-card .result-box { border-color: #00ffff; }
+    
+    .download-btn { display: block; margin-top: 10px; background: transparent; border: 1px solid #fff; color: #fff; padding: 10px; text-align: center; text-decoration: none; }
 
-    /* FOOTER */
+    /* --- FOOTER --- */
     .footer {
-        display: flex; justify-content: space-between; border-top: 1px solid #00ff41;
-        padding-top: 15px; margin-top: auto; font-size: 11px; text-align: center;
-        background: rgba(0,0,0,0.8);
+        width: 100%; background: #000; border-top: 1px solid #00ff41; padding: 15px;
+        display: flex; justify-content: space-around; font-size: 11px; text-align: center;
     }
-    .footer div { flex: 1; border-right: 1px solid #00aa2b; padding: 5px;}
-    .footer div:last-child { border-right: none; }
-    .footer span { display: block; font-size: 15px; color: #fff; margin-top: 5px; font-family: 'Orbitron';}
+    .footer span { display: block; font-size: 14px; color: #fff; font-family: 'Orbitron'; margin-top: 5px; }
 
-    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Mobile Responsive */
-    @media (max-width: 600px) {
-        .cyber-header { height: 150px; flex-direction: column; justify-content: center; text-align: center; padding: 10px; }
-        .header-left h1 { font-size: 24px; }
-        .header-right { display: none; } /* Mobile par side text hide */
-        .module-card { flex-direction: column; text-align: center; }
-        .module-icon { margin-bottom: 10px; }
-        .radio-group { justify-content: center; }
+    /* Responsive: Mobile par ek ke neeche ek */
+    @media (max-width: 768px) {
+        .modules-container { flex-direction: column; }
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 """
 
 HTML_MAIN = BASE_CSS + """
 <!-- HEADER -->
 <div class="cyber-header">
-    <div class="matrix-bg"></div>
     <div class="header-left">
         <h1>CYBER<br><span>PHOTO</span></h1>
         <div class="sub">HACKER EDITION ///</div>
@@ -219,75 +186,107 @@ HTML_MAIN = BASE_CSS + """
     </div>
 </div>
 
-<!-- MAIN BODY -->
-<div class="main-container">
-    <!-- STATUS BOX -->
-    <div class="status-box" style="margin-bottom:20px; width:200px; margin-left:auto; margin-right:auto;">
-        <div style="text-align:center;">> Status : <span>Online</span></div>
-        <div style="text-align:center;">> Tools  : <span>2 Modules</span></div>
-        <div style="text-align:center;">> Version: <span>v2.0.0</span></div>
+<!-- MAIN DASHBOARD -->
+<div class="dashboard">
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <div>> Status : <span>Online</span></div>
+        <div>> Tools  : <span>2 Modules</span></div>
+        <div>> Version: <span>v2.0.0</span></div>
     </div>
 
-    <!-- STEGO CARD -->
-    <div class="module-card">
-        <div class="module-icon">📸</div>
-        <div class="module-form">
-            <h2>STEGO MODULE</h2>
-            <p>Hide / Extract Secret Payload ///</p>
-            <form method="POST" action="/stego" enctype="multipart/form-data">
-                <div class="input-group">
-                    <span class="input-icon">📁</span>
-                    <input type="file" name="image" accept="image/*" required>
+    <!-- MODULES -->
+    <div class="modules-container">
+        
+        <!-- STEGO MODULE -->
+        <div class="module-card">
+            <div class="module-header">
+                <div class="module-icon">📸</div>
+                <div class="module-title">
+                    <h2>STEGO MODULE</h2>
+                    <p>Hide / Extract Secret Payload</p>
                 </div>
-                <div class="input-group">
-                    <span class="input-icon">💬</span>
-                    <input type="text" name="message" placeholder="Enter Secret Message...">
+            </div>
+
+            <form method="POST" action="/stego" enctype="multipart/form-data" style="display:flex; flex-direction:column; height:100%;">
+                <div class="form-group">
+                    <label>> Select Target Image</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📁</span>
+                        <input type="file" name="image" accept="image/*" required>
+                    </div>
                 </div>
-                <div class="radio-group">
-                    <span>Mode :</span>
-                    <label><input type="radio" name="action" value="hide" checked><span class="radio-btn"></span> Hide</label>
-                    <label><input type="radio" name="action" value="extract"><span class="radio-btn"></span> Extract</label>
+                <div class="form-group">
+                    <label>> Secret Message</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">💬</span>
+                        <input type="text" name="message" placeholder="Enter text here...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>> Mode</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="action" value="hide" checked><span class="radio-btn"></span> Hide</label>
+                        <label><input type="radio" name="action" value="extract"><span class="radio-btn"></span> Extract</label>
+                    </div>
                 </div>
                 <button type="submit" class="action-btn">🔒 EXECUTE STEGO >>></button>
             </form>
-        </div>
-    </div>
 
-    <!-- GLITCH CARD -->
-    <div class="module-card" style="border-color:#00ffff;">
-        <div class="module-icon" style="border-color:#00ffff; box-shadow: inset 0 0 20px rgba(0,255,255,0.5); color:#00ffff;">⚡</div>
-        <div class="module-form">
-            <h2 style="color:#00ffff; text-shadow: 0 0 5px #00ffff;">GLITCH MODULE</h2>
-            <p style="color:#008f8f;">Corrupt & Restore Image Pixels ///</p>
-            <form method="POST" action="/glitch" enctype="multipart/form-data">
-                <div class="input-group" style="border-color:#00ffff;">
-                    <span class="input-icon" style="background:rgba(0,255,255,0.2); border-color:#00ffff;">🔑</span>
-                    <input type="text" name="key" placeholder="Enter Encryption Key..." required style="color:#00ffff;">
+            {% if result and result_type == 'stego' %}
+                <div class="result-box">
+                    <div style="color:#00aa2b;">> OUTPUT:</div>
+                    <div style="color:#fff; margin-top:5px;">{{ result|safe }}</div>
+                    {% if download_link %}<a href="{{ download_link }}" download class="download-btn">[ DOWNLOAD ]</a>{% endif %}
                 </div>
-                <div class="input-group" style="border-color:#00ffff;">
-                    <span class="input-icon" style="background:rgba(0,255,255,0.2); border-color:#00ffff;">📁</span>
-                    <input type="file" name="image" accept="image/*" required>
+            {% endif %}
+        </div>
+
+        <!-- GLITCH MODULE -->
+        <div class="module-card glitch-card">
+            <div class="module-header glitch-header">
+                <div class="module-icon">⚡</div>
+                <div class="module-title">
+                    <h2>GLITCH MODULE</h2>
+                    <p>Corrupt & Restore Pixels</p>
                 </div>
-                <div class="radio-group" style="color:#00ffff;">
-                    <span>Mode :</span>
-                    <label><input type="radio" name="action" value="glitch" checked><span class="radio-btn" style="border-color:#00ffff;"></span> Glitch</label>
-                    <label><input type="radio" name="action" value="restore"><span class="radio-btn" style="border-color:#00ffff;"></span> Restore</label>
+            </div>
+
+            <form method="POST" action="/glitch" enctype="multipart/form-data" style="display:flex; flex-direction:column; height:100%;">
+                <div class="form-group">
+                    <label>> Encryption Key</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔑</span>
+                        <input type="text" name="key" placeholder="Enter Secret Key..." required>
+                    </div>
                 </div>
-                <button type="submit" class="action-btn" style="background:#00ffff; box-shadow: 0 0 15px rgba(0,255,255,0.5);">⚡ APPLY GLITCH >>></button>
+                <div class="form-group">
+                    <label>> Select Image</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📁</span>
+                        <input type="file" name="image" accept="image/*" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>> Mode</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="action" value="glitch" checked><span class="radio-btn"></span> Glitch</label>
+                        <label><input type="radio" name="action" value="restore"><span class="radio-btn"></span> Restore</label>
+                    </div>
+                </div>
+                <button type="submit" class="action-btn">⚡ APPLY GLITCH >>></button>
             </form>
-        </div>
-    </div>
 
-    <!-- RESULTS -->
-    {% if result %}
-        <div class="result-box">
-            <div style="color:#00aa2b; font-size:12px; margin-bottom:5px;">> SYSTEM OUTPUT:</div>
-            <div style="color:#fff;">{{ result|safe }}</div>
+            {% if result and result_type == 'glitch' %}
+                <div class="result-box">
+                    <div style="color:#00ffff;">> OUTPUT:</div>
+                    <div style="color:#fff; margin-top:5px;">{{ result|safe }}</div>
+                    {% if download_link %}<a href="{{ download_link }}" download class="download-btn">[ DOWNLOAD ]</a>{% endif %}
+                </div>
+            {% endif %}
         </div>
-    {% endif %}
-    {% if download_link %}
-        <a href="{{ download_link }}" download class="download-btn">[ DOWNLOAD IMAGE ]</a>
-    {% endif %}
+
+    </div>
 </div>
 
 <!-- FOOTER -->
@@ -324,7 +323,7 @@ def stego():
     file = request.files.get('image')
     message = request.form.get('message', '')
     
-    if not file: return render_template_string(HTML_MAIN, result="ERROR: File upload failed.")
+    if not file: return render_template_string(HTML_MAIN, result="ERROR: File upload failed.", result_type='stego')
     
     original_format = file.filename.split('.')[-1].lower()
     if original_format not in ['jpg', 'jpeg', 'png']: original_format = 'png'
@@ -335,7 +334,7 @@ def stego():
         img.thumbnail((1500, 1500), Image.Resampling.LANCZOS)
     
     if action == 'hide':
-        if not message: return render_template_string(HTML_MAIN, result="ERROR: Message is empty.")
+        if not message: return render_template_string(HTML_MAIN, result="ERROR: Message is empty.", result_type='stego')
         
         binary_msg = text_to_bin(message) + '1111111111111110'
         data_index = 0
@@ -361,7 +360,7 @@ def stego():
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         link = f"data:{mime};base64,{b64}"
-        return render_template_string(HTML_MAIN, result="SUCCESS: Payload injected securely.", download_link=link)
+        return render_template_string(HTML_MAIN, result="SUCCESS: Payload injected.", download_link=link, result_type='stego')
 
     elif action == 'extract':
         pixels = img.load()
@@ -371,8 +370,8 @@ def stego():
                 r, g, b = pixels[x, y]
                 binary_data += str(r & 1) + str(g & 1) + str(b & 1)
                 if binary_data.endswith('1111111111111110'):
-                    return render_template_string(HTML_MAIN, result=f"DECRYPTED MESSAGE:<br><br><span style='color:#00ff41; font-size:20px;'>\"{bin_to_text(binary_data[:-16])}\"</span>")
-        return render_template_string(HTML_MAIN, result="ERROR: No hidden data detected.")
+                    return render_template_string(HTML_MAIN, result=f"DECRYPTED:<br><span style='color:#00ff41; font-size:18px;'>\"{bin_to_text(binary_data[:-16])}\"</span>", result_type='stego')
+        return render_template_string(HTML_MAIN, result="ERROR: No hidden data detected.", result_type='stego')
 
 @app.route('/glitch', methods=['POST'])
 def glitch():
@@ -380,7 +379,7 @@ def glitch():
     file = request.files.get('image')
     key = request.form.get('key', '')
     
-    if not file or not key: return render_template_string(HTML_MAIN, result="ERROR: Missing File or Encryption Key.")
+    if not file or not key: return render_template_string(HTML_MAIN, result="ERROR: Missing File or Key.", result_type='glitch')
     
     original_format = file.filename.split('.')[-1].lower()
     if original_format not in ['jpg', 'jpeg', 'png']: original_format = 'png'
@@ -408,7 +407,7 @@ def glitch():
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         link = f"data:{mime};base64,{b64}"
-        return render_template_string(HTML_MAIN, result="SUCCESS: Pixels corrupted.", download_link=link)
+        return render_template_string(HTML_MAIN, result="SUCCESS: Pixels corrupted.", download_link=link, result_type='glitch')
 
     elif action == 'restore':
         glitched_pixels = list(img.getdata())
@@ -431,7 +430,7 @@ def glitch():
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         link = f"data:{mime};base64,{b64}"
-        return render_template_string(HTML_MAIN, result="SUCCESS: Image restored.", download_link=link)
+        return render_template_string(HTML_MAIN, result="SUCCESS: Image restored.", download_link=link, result_type='glitch')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
