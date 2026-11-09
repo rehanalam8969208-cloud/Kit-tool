@@ -10,6 +10,6 @@ Termux kholo aur yeh commands ek-ek karke chalao:
 
 ```bash
 pkg install git -y
-git clone https://github.com/AAPKA_USERNAME/Cyber-Photo-Toolkit.git
+git clone https://github.com/rehanalam8969208-cloud/Cyber-Photo-Toolkit.git
 cd Cyber-Photo-Toolkit
 bash install.sh
