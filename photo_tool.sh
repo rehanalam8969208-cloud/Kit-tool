@@ -1,5 +1,9 @@
 #!/bin/bash
+#!/bin/bash
 
+# --- AUTO UPDATER ---
+bash updater.sh
+# --------------------
 run_python() {
     python core_tools.py "$@"
 }
