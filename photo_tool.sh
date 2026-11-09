@@ -1,18 +1,17 @@
 #!/bin/bash
-#!/bin/bash
 
-# --- AUTO UPDATER ---
+# Auto-Update trigger
 bash updater.sh
-# --------------------
+
 run_python() {
     python core_tools.py "$@"
 }
 
-# Exporting the python logic to bash
 cat << 'EOF' > core_tools_runner.py
 import sys
 sys.path.append('.')
 from core_tools import *
+import os
 
 if __name__ == "__main__":
     while True:
