@@ -6,9 +6,6 @@ import random
 
 GALLERY_PATH = "/storage/emulated/0/DCIM/Camera/"
 
-def clear():
-    os.system('clear')
-
 def find_photo(image_name):
     if os.path.exists(image_name):
         return image_name
@@ -18,9 +15,6 @@ def find_photo(image_name):
             return p
     return None
 
-# ==========================================
-# FEATURE 1: SECRET STEGO (MESSAGE HIDING)
-# ==========================================
 def text_to_bin(text):
     return ''.join(format(ord(i), '08b') for i in text)
 
@@ -82,9 +76,6 @@ def extract_message(image_path):
                 return
     print("[-] Koi message nahi mila.")
 
-# ==========================================
-# FEATURE 2: PIXEL GLITCH & RESTORE
-# ==========================================
 def glitch_image(image_path, output_path, key):
     real_path = find_photo(image_path)
     if not real_path: return print("[-] Photo nahi mili.")
