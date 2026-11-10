@@ -42,7 +42,7 @@ BASE_CSS = """
     .radio-group label:has(input[type="radio"]:checked) { background: var(--accent-bg); border-color: var(--accent-color); color: var(--accent-color); }
     .action-btn { width: 100%; background: var(--accent-color); color: #09090b; border: none; padding: 18px; font-size: 16px; font-weight: 600; cursor: pointer; border-radius: var(--radius-pill); margin-top: 24px; transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
     .action-btn:active { transform: scale(0.96); }
-    .result-box { margin-top: 24px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); padding: 20px; border-radius: 20px; font-size: 14px; text-align: center; }
+    .result-box { margin-top: 24px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); padding: 20px; border-radius: 20px; font-size: 14px; text-align: center; word-wrap: break-word; }
     .download-btn { display: block; margin-top: 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 16px; text-align: center; text-decoration: none; border-radius: var(--radius-pill); font-weight: 500; transition: 0.2s; }
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(9, 9, 11, 0.85); backdrop-filter: var(--glass-blur); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; padding: 16px 0 calc(16px + env(safe-area-inset-bottom)); z-index: 99; }
     .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-secondary); font-size: 12px; font-weight: 500; transition: 0.3s; gap: 6px; }
@@ -133,8 +133,11 @@ HTML_TEMPLATE = """
 """
 
 # ==========================================
-# HELPER FUNCTIONS (Stronger Logic)
+# MAGIC WORD & LOGIC (Foolproof)
 # ==========================================
+# Yeh raaz ka code hai. Har photo me message ke shuru me yeh chhip jayega.
+SECRET_MARKER = "1101101110111011" # Binary for "MAGIC"
+
 def text_to_bin(text): return ''.join(format(ord(i), '08b') for i in text)
 def bin_to_text(binary):
     str_data = ''
@@ -144,6 +147,7 @@ def bin_to_text(binary):
             try: str_data += chr(int(byte, 2))
             except: pass
     return str_data
+
 def random_name(length=8): return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 # ==========================================
@@ -155,7 +159,6 @@ def index():
     if tab not in ['stego', 'glitch', 'share']: tab = 'stego'
     return render_template_string(HTML_TEMPLATE, active_tab=tab)
 
-# STEGO (FIXED)
 @app.route('/stego', methods=['POST'])
 def stego():
     action = request.form.get('action')
@@ -163,24 +166,22 @@ def stego():
     message = request.form.get('message', '')
     if not file: return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Error: File upload failed.", result_type='stego')
     
-    # Convert to RGB
     img = Image.open(file).convert('RGB')
     
-    # Hide Logic
     if action == 'hide':
         if not message: return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Error: Message empty.", result_type='stego')
         
-        # Add a very clear end marker
-        binary_msg = text_to_bin(message) + '00000000' 
+        # Format: [MAGIC MARKER] + [MESSAGE BINARY] + [END MARKER]
+        binary_msg = SECRET_MARKER + text_to_bin(message) + '00000000'
+        
         data_index = 0
         pixels = img.load()
         
-        # Har pixel me 1 bit daalo (safer than RGB spread)
+        # Har pixel ke R channel (Red) me 1 bit chhipayenge
         for y in range(img.height):
             for x in range(img.width):
                 if data_index < len(binary_msg):
                     r, g, b = pixels[x, y]
-                    # Update Red channel's last bit
                     r = r & ~1 | int(binary_msg[data_index])
                     pixels[x, y] = (r, g, b)
                     data_index += 1
@@ -188,36 +189,35 @@ def stego():
             if data_index >= len(binary_msg): break
             
         img_io = io.BytesIO()
-        img.save(img_io, 'PNG') # Force PNG to avoid compression loss
+        img.save(img_io, 'PNG') # 100% Lossless
         mime = 'image/png'
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Success: Payload injected securely.", download_link=f"data:{mime};base64,{b64}", result_type='stego')
     
-    # Extract Logic
     elif action == 'extract':
         pixels = img.load()
         binary_data = ""
         
-        # Read Red channel's last bits
         for y in range(img.height):
             for x in range(img.width):
                 r, g, b = pixels[x, y]
                 binary_data += str(r & 1)
                 
-                # Check for end marker
-                if binary_data.endswith('00000000'):
-                    clean_binary = binary_data[:-8]
-                    if len(clean_binary) % 8 == 0:
-                        decrypted = bin_to_text(clean_binary)
-                        if decrypted.strip() != "": # Ensure it's not empty
-                            return render_template_string(HTML_TEMPLATE, active_tab='stego', result=f"Decrypted Data:<br><span style='color:var(--accent-color); font-size:18px; font-weight:600; margin-top:10px; display:inline-block;'>\"{decrypted}\"</span>", result_type='stego')
-                    # Reset if found early junk marker
-                    binary_data = ""
-        
-        return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Error: No hidden data found.", result_type='stego')
+                # Check karo ki Magic Marker mila kya
+                if len(binary_data) >= len(SECRET_MARKER):
+                    if binary_data.startswith(SECRET_MARKER):
+                        # Magic marker mil gaya, ab aage ka data nikaalo
+                        remaining_data = binary_data[len(SECRET_MARKER):]
+                        if remaining_data.endswith('00000000'):
+                            clean_binary = remaining_data[:-8]
+                            if len(clean_binary) % 8 == 0:
+                                decrypted = bin_to_text(clean_binary)
+                                if decrypted.strip() != "":
+                                    return render_template_string(HTML_TEMPLATE, active_tab='stego', result=f"Decrypted Data:<br><span style='color:var(--accent-color); font-size:18px; font-weight:600; margin-top:10px; display:inline-block;'>\"{decrypted}\"</span>", result_type='stego')
+                            
+        return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Error: No hidden data found (or file was compressed).", result_type='stego')
 
-# GLITCH (FORCED PNG FOR LOSSLESS QUALITY)
 @app.route('/glitch', methods=['POST'])
 def glitch():
     action = request.form.get('action')
@@ -237,7 +237,7 @@ def glitch():
         new_img = Image.new('RGB', (img.width, img.height))
         new_img.putdata(new_pixels)
         img_io = io.BytesIO()
-        new_img.save(img_io, 'PNG') # Lossless
+        new_img.save(img_io, 'PNG') 
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="Success: Pixels corrupted.", download_link=f"data:image/png;base64,{b64}", result_type='glitch')
@@ -252,12 +252,11 @@ def glitch():
         new_img = Image.new('RGB', (img.width, img.height))
         new_img.putdata(original_pixels)
         img_io = io.BytesIO()
-        new_img.save(img_io, 'PNG') # Lossless
+        new_img.save(img_io, 'PNG')
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="Success: Image restored.", download_link=f"data:image/png;base64,{b64}", result_type='glitch')
 
-# FILE SHARE
 @app.route('/upload', methods=['POST'])
 def upload():
     file = request.files.get('file')
