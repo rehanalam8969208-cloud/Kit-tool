@@ -11,7 +11,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # ==========================================
-# CSS (Same 90% Ultra-Glassy Theme)
+# CSS (90% Ultra-Glassy Theme + Loader UI)
 # ==========================================
 BASE_CSS = """
 <style>
@@ -23,38 +23,47 @@ BASE_CSS = """
     body::before { background: rgba(0, 229, 255, 0.3); top: 10%; left: 10%; }
     body::after { background: rgba(162, 0, 255, 0.3); bottom: 20%; right: 10%; animation-delay: -5s; }
     @keyframes floatBg { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.2); } }
+    
     .app-header { width: 100%; background: rgba(0, 0, 0, 0.2); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-border); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .header-left h1 { font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #fff, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .header-left .sub { font-size: 12px; color: var(--text-secondary); font-weight: 400; letter-spacing: 1px; }
     .menu-btn { font-size: 24px; color: var(--text-primary); cursor: pointer; padding: 5px; }
+    
     .content { flex: 1; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .module-card { width: 100%; max-width: 450px; background: var(--glass-surface); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: var(--radius-large); padding: 30px 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: cardEntrance 0.6s forwards; opacity: 0; transform: translateY(30px); }
     @keyframes cardEntrance { to { opacity: 1; transform: translateY(0); } }
+    
     .module-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
     .module-icon { width: 56px; height: 56px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 20px; display: flex; justify-content: center; align-items: center; font-size: 26px; color: var(--accent-color); box-shadow: var(--accent-glow); }
     .module-title h2 { font-size: 22px; font-weight: 600; }
     .module-title p { font-size: 13px; color: var(--text-secondary); }
+    
     .form-group { margin-bottom: 22px; }
     .form-group label { display: block; margin-bottom: 10px; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
     .input-wrapper { display: flex; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; transition: 0.3s; }
-    .input-wrapper:focus-within { border-color: var(--accent-color); background: rgba(0, 0, 0, 0.4); }
+    .input-wrapper:focus-within { border-color: var(--accent-color); background: rgba(0, 0, 0, 0.4); box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.1); }
     .input-icon { padding: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
     .input-wrapper:focus-within .input-icon { color: var(--accent-color); }
     input[type="text"], input[type="file"] { width: 100%; background: transparent; border: none; color: var(--text-primary); padding: 16px 16px 16px 0; font-family: inherit; outline: none; font-size: 15px; }
     input[type="file"]::file-selector-button { background: rgba(255,255,255,0.1); color: var(--text-primary); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 8px 16px; margin-right: 12px; cursor: pointer; }
+    
     .radio-group { display: flex; gap: 12px; margin-top: 10px; }
     .radio-group label { flex: 1; text-align: center; padding: 14px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-secondary); background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; transition: 0.3s; }
     .radio-group input[type="radio"] { display: none; }
     .radio-group label:has(input[type="radio"]:checked) { background: rgba(0, 229, 255, 0.15); border-color: var(--accent-color); color: var(--accent-color); }
-    .action-btn { width: 100%; background: linear-gradient(135deg, var(--accent-color), #009dff); color: #000; border: none; padding: 18px; font-size: 16px; font-weight: 700; cursor: pointer; border-radius: var(--radius-pill); margin-top: 24px; text-transform: uppercase; box-shadow: 0 10px 20px rgba(0, 229, 255, 0.3); }
+    
+    .action-btn { width: 100%; background: linear-gradient(135deg, var(--accent-color), #009dff); color: #000; border: none; padding: 18px; font-size: 16px; font-weight: 700; cursor: pointer; border-radius: var(--radius-pill); margin-top: 24px; text-transform: uppercase; box-shadow: 0 10px 20px rgba(0, 229, 255, 0.3); transition: 0.2s; }
     .action-btn:active { transform: scale(0.95); }
+    
     .result-box { margin-top: 24px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--accent-color); padding: 20px; border-radius: 20px; font-size: 14px; text-align: center; word-wrap: break-word; }
-    .download-btn { display: block; margin-top: 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 16px; text-align: center; text-decoration: none; border-radius: var(--radius-pill); font-weight: 500; }
+    .download-btn { display: block; margin-top: 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 16px; text-align: center; text-decoration: none; border-radius: var(--radius-pill); font-weight: 500; transition: 0.3s; }
+    
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(5, 5, 8, 0.6); backdrop-filter: blur(50px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; padding: 16px 0 calc(16px + env(safe-area-inset-bottom)); z-index: 99; }
     .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-secondary); font-size: 12px; font-weight: 500; gap: 6px; }
     .nav-icon { font-size: 20px; padding: 8px 24px; border-radius: var(--radius-pill); }
     .nav-item.active { color: var(--accent-color); }
     .nav-item.active .nav-icon { background: rgba(0, 229, 255, 0.15); }
+    
     .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.4s; }
     .menu-overlay.active { opacity: 1; visibility: visible; }
     .side-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(10, 10, 15, 0.4); backdrop-filter: blur(50px); border-left: 1px solid rgba(255,255,255,0.1); z-index: 1001; transition: 0.5s; padding: 24px; overflow-y: auto; }
@@ -66,6 +75,15 @@ BASE_CSS = """
     .contact-list { list-style: none; }
     .contact-list li { display: flex; align-items: center; gap: 12px; font-size: 14px; margin-bottom: 12px; color: #fff;}
     .contact-list i { color: var(--accent-color); width: 20px; text-align: center; }
+
+    /* --- LOADER CSS --- */
+    .global-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+    .global-loader.active { opacity: 1; visibility: visible; }
+    .loader-content { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .cyber-spinner { width: 70px; height: 70px; border: 4px solid rgba(0, 229, 255, 0.1); border-top: 4px solid var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; box-shadow: 0 0 30px rgba(0, 229, 255, 0.3); margin-bottom: 20px; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .loader-text { font-size: 18px; font-weight: 600; color: var(--accent-color); margin-bottom: 10px; letter-spacing: 1px; }
+    .loader-timer { font-size: 14px; color: rgba(255,255,255,0.7); font-family: monospace; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
 </style>
 """
 
@@ -83,6 +101,16 @@ HTML_TEMPLATE = """
     """ + BASE_CSS + """
 </head>
 <body>
+<!-- LOADER SCREEN -->
+<div class="global-loader" id="loaderOverlay">
+    <div class="loader-content">
+        <div class="cyber-spinner"></div>
+        <div class="loader-text" id="loaderText">Processing Protocol...</div>
+        <div class="loader-timer"><i class="fa-solid fa-stopwatch"></i> <span id="timerSeconds">0</span>s elapsed</div>
+        <div style="font-size:11px; color:#666; margin-top:15px;">Please wait. Do not close this window.</div>
+    </div>
+</div>
+
 <div class="app-header">
     <div class="header-left">
         <h1>Utility Tools</h1>
@@ -111,7 +139,7 @@ HTML_TEMPLATE = """
             <div class="module-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="module-title"><h2>Steganography</h2><p>Hide or Extract Secret Data</p></div>
         </div>
-        <form method="POST" action="/stego" enctype="multipart/form-data">
+        <form method="POST" action="/stego" enctype="multipart/form-data" onsubmit="showLoader('Injecting/Extracting Payload...')">
             <div class="form-group">
                 <label>Select Image</label>
                 <div class="input-wrapper">
@@ -133,7 +161,7 @@ HTML_TEMPLATE = """
             <button type="submit" class="action-btn">Execute Protocol</button>
         </form>
         {% if result and result_type == 'stego' %}
-        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download="secured_image.png" class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
+        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download="secured_image.png" class="download-btn" onclick="hideDownload(this)"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
         {% endif %}
     </div>
     
@@ -143,7 +171,7 @@ HTML_TEMPLATE = """
             <div class="module-icon"><i class="fa-solid fa-bolt"></i></div>
             <div class="module-title"><h2>Glitch Module</h2><p>Corrupt or Restore Pixels</p></div>
         </div>
-        <form method="POST" action="/glitch" enctype="multipart/form-data">
+        <form method="POST" action="/glitch" enctype="multipart/form-data" onsubmit="showLoader('Scrambling/Restoring Pixels...')">
             <div class="form-group">
                 <label>Encryption Key</label>
                 <div class="input-wrapper">
@@ -165,7 +193,7 @@ HTML_TEMPLATE = """
             <button type="submit" class="action-btn">Apply Effect</button>
         </form>
         {% if result and result_type == 'glitch' %}
-        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download="glitched_image.png" class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
+        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download="glitched_image.png" class="download-btn" onclick="hideDownload(this)"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
         {% endif %}
     </div>
     
@@ -175,7 +203,7 @@ HTML_TEMPLATE = """
             <div class="module-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
             <div class="module-title"><h2>File Share</h2><p>Secure File Transfer</p></div>
         </div>
-        <form method="POST" action="/upload" enctype="multipart/form-data">
+        <form method="POST" action="/upload" enctype="multipart/form-data" onsubmit="showLoader('Encrypting & Uploading File...')">
             <div class="form-group">
                 <label>Select File (Max 20MB)</label>
                 <div class="input-wrapper">
@@ -203,9 +231,36 @@ HTML_TEMPLATE = """
 </div>
 
 <script>
+    // Menu Toggle Logic
     function toggleMenu() {
         document.getElementById('menuOverlay').classList.toggle('active');
         document.getElementById('sideDrawer').classList.toggle('active');
+    }
+
+    // Loader & Timer Logic
+    function showLoader(textMsg) {
+        document.getElementById('loaderOverlay').classList.add('active');
+        document.getElementById('loaderText').innerText = textMsg;
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            document.getElementById('timerSeconds').innerText = seconds;
+        }, 1000);
+    }
+
+    // Hide Download Button after Click Logic
+    function hideDownload(btn) {
+        // Change text to success visually
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Downloaded Successfully';
+        btn.style.background = 'rgba(0, 255, 0, 0.1)';
+        btn.style.borderColor = '#00ff00';
+        btn.style.color = '#00ff00';
+        btn.style.pointerEvents = 'none'; // Disable clicking again
+        
+        // Hide it completely after 1.5 seconds so user knows it's gone
+        setTimeout(() => {
+            btn.style.display = 'none';
+        }, 1500);
     }
 </script>
 </body>
@@ -248,13 +303,11 @@ def stego():
     file = request.files.get('image')
     message = request.form.get('message', '')
     
-    # CHECK 1: File Uploaded?
     if not file or file.filename == '':
         return render_template_string(HTML_TEMPLATE, active_tab='stego', result="<span style='color:#ff4757;'>Error: Please select an image first!</span>", result_type='stego')
     
     try:
         img = Image.open(file).convert('RGB')
-        # FIX: Resize image so it doesn't crash the server/browser memory
         img.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
     except:
         return render_template_string(HTML_TEMPLATE, active_tab='stego', result="<span style='color:#ff4757;'>Error: Invalid Image File.</span>", result_type='stego')
@@ -264,13 +317,11 @@ def stego():
         if not message or message.strip() == '': 
             return render_template_string(HTML_TEMPLATE, active_tab='stego', result="<span style='color:#ff4757;'>Error: Message cannot be empty.</span>", result_type='stego')
         
-        # Format: [MAGIC MARKER] + [MESSAGE BINARY] + [END MARKER (00000000)]
         binary_msg = SECRET_MARKER + text_to_bin(message) + '00000000'
         
         data_index = 0
         pixels = img.load()
         
-        # Loop through pixels and hide 1 bit per pixel in Red channel
         for y in range(img.height):
             for x in range(img.width):
                 if data_index < len(binary_msg):
@@ -282,7 +333,7 @@ def stego():
             if data_index >= len(binary_msg): break
             
         img_io = io.BytesIO()
-        img.save(img_io, 'PNG') # Force Lossless
+        img.save(img_io, 'PNG')
         mime = 'image/png'
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
@@ -293,16 +344,13 @@ def stego():
         pixels = img.load()
         binary_data = ""
         
-        # Read Red channel bits
         for y in range(img.height):
             for x in range(img.width):
                 r, g, b = pixels[x, y]
                 binary_data += str(r & 1)
                 
-                # Check for Magic Marker only when we have enough bits
                 if len(binary_data) >= len(SECRET_MARKER):
                     if binary_data.startswith(SECRET_MARKER):
-                        # We found our marker! Now extract message until end marker
                         remaining_data = binary_data[len(SECRET_MARKER):]
                         if remaining_data.endswith('00000000'):
                             clean_binary = remaining_data[:-8]
@@ -311,7 +359,6 @@ def stego():
                                 if decrypted.strip() != "":
                                     return render_template_string(HTML_TEMPLATE, active_tab='stego', result=f"<span style='color:var(--accent-color); font-size:18px; font-weight:600;'>\"{decrypted}\"</span>", result_type='stego')
                     else:
-                        # If first bits don't match marker, it's not our image
                         if len(binary_data) == len(SECRET_MARKER) and not binary_data.startswith(SECRET_MARKER):
                             return render_template_string(HTML_TEMPLATE, active_tab='stego', result="<span style='color:#ff4757;'>Error: No hidden data found.</span>", result_type='stego')
                             
@@ -328,7 +375,6 @@ def glitch():
     
     try:
         img = Image.open(file).convert('RGB')
-        # FIX: Resize image so it doesn't crash the server/browser memory
         img.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
     except:
         return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="<span style='color:#ff4757;'>Error: Invalid Image File.</span>", result_type='glitch')
