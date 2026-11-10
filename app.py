@@ -18,14 +18,13 @@ BASE_CSS = """
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
     
     :root {
-        /* Android 17 Concept Colors */
         --bg-color: #09090b;
         --glass-surface: rgba(24, 24, 27, 0.65);
         --glass-border: rgba(255, 255, 255, 0.08);
         --glass-blur: blur(30px);
         --text-primary: #f4f4f5;
         --text-secondary: #a1a1aa;
-        --accent-color: #a8c7fa; /* Material You Blue */
+        --accent-color: #a8c7fa;
         --accent-bg: rgba(168, 199, 250, 0.15);
         --radius-large: 28px;
         --radius-pill: 999px;
@@ -52,7 +51,6 @@ BASE_CSS = """
         overflow-x: hidden;
     }
 
-    /* --- HEADER --- */
     .app-header {
         width: 100%;
         background: rgba(9, 9, 11, 0.7);
@@ -67,38 +65,13 @@ BASE_CSS = """
         top: 0;
         z-index: 100;
     }
-    .header-left h1 { 
-        font-size: 22px; 
-        font-weight: 600; 
-        letter-spacing: 0.5px;
-    }
-    .header-left .sub { 
-        font-size: 12px; 
-        color: var(--text-secondary); 
-        font-weight: 400;
-    }
-    .menu-btn {
-        font-size: 24px;
-        color: var(--text-primary);
-        cursor: pointer;
-        padding: 8px;
-        border-radius: 50%;
-        background: transparent;
-        transition: 0.3s;
-    }
+    .header-left h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
+    .header-left .sub { font-size: 12px; color: var(--text-secondary); font-weight: 400; }
+    .menu-btn { font-size: 24px; color: var(--text-primary); cursor: pointer; padding: 8px; border-radius: 50%; background: transparent; transition: 0.3s; }
     .menu-btn:active { background: rgba(255,255,255,0.1); }
     
-    /* --- MAIN CONTENT AREA --- */
-    .content {
-        flex: 1;
-        padding: 24px 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
+    .content { flex: 1; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    /* --- MODULE CARD (Android Glass Form) --- */
     .module-card {
         width: 100%;
         max-width: 450px;
@@ -112,205 +85,86 @@ BASE_CSS = """
         animation: scaleUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    .module-header { 
-        display: flex; 
-        align-items: center; 
-        gap: 16px; 
-        margin-bottom: 30px; 
-    }
+    .module-header { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
     .module-icon { 
-        width: 54px; 
-        height: 54px; 
-        background: var(--accent-bg);
-        border: 1px solid rgba(168, 199, 250, 0.2); 
-        border-radius: 20px; 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        font-size: 24px; 
-        color: var(--accent-color);
+        width: 54px; height: 54px; background: var(--accent-bg); border: 1px solid rgba(168, 199, 250, 0.2); 
+        border-radius: 20px; display: flex; justify-content: center; align-items: center; font-size: 24px; color: var(--accent-color);
     }
     .module-title h2 { font-size: 22px; font-weight: 600; }
     .module-title p { font-size: 13px; color: var(--text-secondary); margin-top: 4px;}
 
-    /* --- FORM ELEMENTS --- */
     .form-group { margin-bottom: 22px; }
-    .form-group label { 
-        display: block; 
-        margin-bottom: 10px; 
-        font-size: 13px; 
-        color: var(--text-secondary); 
-        font-weight: 500;
-        padding-left: 4px;
-    }
+    .form-group label { display: block; margin-bottom: 10px; font-size: 13px; color: var(--text-secondary); font-weight: 500; padding-left: 4px; }
     .input-wrapper { 
-        display: flex; 
-        background: rgba(0, 0, 0, 0.3); 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        border-radius: 16px; 
-        overflow: hidden; 
-        transition: all 0.3s ease;
+        display: flex; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); 
+        border-radius: 16px; overflow: hidden; transition: all 0.3s ease;
     }
-    .input-wrapper:focus-within {
-        border-color: var(--accent-color);
-        background: rgba(0, 0, 0, 0.5);
-    }
-    .input-icon { 
-        padding: 16px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-secondary);
-        font-size: 16px;
-    }
+    .input-wrapper:focus-within { border-color: var(--accent-color); background: rgba(0, 0, 0, 0.5); }
+    .input-icon { padding: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 16px; }
     .input-wrapper:focus-within .input-icon { color: var(--accent-color); }
     
     input[type="text"], input[type="file"] {
-        width: 100%; 
-        background: transparent; 
-        border: none; 
-        color: var(--text-primary); 
-        padding: 16px 16px 16px 0;
-        font-family: inherit; 
-        outline: none; 
-        font-size: 15px;
+        width: 100%; background: transparent; border: none; color: var(--text-primary); 
+        padding: 16px 16px 16px 0; font-family: inherit; outline: none; font-size: 15px;
     }
     input[type="file"]::file-selector-button { 
-        background: var(--glass-surface); 
-        color: var(--text-primary); 
-        border: 1px solid var(--glass-border); 
-        border-radius: var(--radius-pill);
-        padding: 8px 16px; 
-        margin-right: 12px;
-        cursor: pointer; 
-        font-weight: 500; 
-        transition: 0.2s;
+        background: var(--glass-surface); color: var(--text-primary); border: 1px solid var(--glass-border); 
+        border-radius: var(--radius-pill); padding: 8px 16px; margin-right: 12px; cursor: pointer; font-weight: 500; transition: 0.2s;
     }
 
-    /* --- RADIO BUTTONS (Material 3 Style) --- */
-    .radio-group { 
-        display: flex; 
-        gap: 12px; 
-        margin-top: 10px; 
-    }
+    .radio-group { display: flex; gap: 12px; margin-top: 10px; }
     .radio-group label { 
-        flex: 1;
-        text-align: center;
-        padding: 14px;
-        cursor: pointer; 
-        font-size: 14px; 
-        font-weight: 500;
-        color: var(--text-secondary); 
-        background: rgba(0,0,0,0.3);
-        border: 1px solid rgba(255,255,255,0.05);
-        border-radius: 16px;
-        transition: 0.3s;
+        flex: 1; text-align: center; padding: 14px; cursor: pointer; font-size: 14px; font-weight: 500;
+        color: var(--text-secondary); background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 16px; transition: 0.3s;
     }
     .radio-group input[type="radio"] { display: none; }
-    .radio-group label:has(input[type="radio"]:checked) {
-        background: var(--accent-bg);
-        border-color: var(--accent-color);
-        color: var(--accent-color);
-    }
+    .radio-group label:has(input[type="radio"]:checked) { background: var(--accent-bg); border-color: var(--accent-color); color: var(--accent-color); }
 
-    /* --- SUBMIT BUTTON --- */
     .action-btn {
-        width: 100%; 
-        background: var(--accent-color); 
-        color: #09090b; 
-        border: none; 
-        padding: 18px;
-        font-size: 16px; 
-        font-weight: 600;
-        cursor: pointer; 
-        border-radius: var(--radius-pill);
-        margin-top: 24px;
-        transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        width: 100%; background: var(--accent-color); color: #09090b; border: none; padding: 18px;
+        font-size: 16px; font-weight: 600; cursor: pointer; border-radius: var(--radius-pill);
+        margin-top: 24px; transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .action-btn:active { transform: scale(0.96); }
 
-    /* --- RESULT BOX --- */
     .result-box { 
-        margin-top: 24px; 
-        background: rgba(0, 0, 0, 0.3); 
-        border: 1px solid var(--glass-border); 
-        padding: 20px; 
-        border-radius: 20px; 
-        font-size: 14px; 
-        text-align: center;
+        margin-top: 24px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); 
+        padding: 20px; border-radius: 20px; font-size: 14px; text-align: center;
     }
     .download-btn { 
-        display: block; 
-        margin-top: 16px; 
-        background: rgba(255,255,255,0.1); 
-        border: 1px solid var(--glass-border); 
-        color: var(--text-primary); 
-        padding: 16px; 
-        text-align: center; 
-        text-decoration: none; 
-        border-radius: var(--radius-pill); 
-        font-weight: 500;
-        transition: 0.2s;
+        display: block; margin-top: 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); 
+        color: var(--text-primary); padding: 16px; text-align: center; text-decoration: none; 
+        border-radius: var(--radius-pill); font-weight: 500; transition: 0.2s;
     }
     .download-btn:active { background: rgba(255,255,255,0.15); }
 
-    /* --- BOTTOM NAVIGATION BAR --- */
     .bottom-nav {
-        position: fixed;
-        bottom: 0; left: 0; width: 100%;
-        background: rgba(9, 9, 11, 0.85);
-        backdrop-filter: var(--glass-blur);
-        -webkit-backdrop-filter: var(--glass-blur);
-        border-top: 1px solid var(--glass-border);
-        display: flex;
-        justify-content: space-around;
-        padding: 16px 0 calc(16px + env(safe-area-inset-bottom));
-        z-index: 99;
+        position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(9, 9, 11, 0.85);
+        backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+        border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around;
+        padding: 16px 0 calc(16px + env(safe-area-inset-bottom)); z-index: 99;
     }
 
-    .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-        color: var(--text-secondary);
-        font-size: 12px;
-        font-weight: 500;
-        transition: 0.3s;
-        gap: 6px;
+    .nav-item { 
+        display: flex; flex-direction: column; align-items: center; text-decoration: none; 
+        color: var(--text-secondary); font-size: 12px; font-weight: 500; transition: 0.3s; gap: 6px;
     }
-    
-    .nav-icon {
-        font-size: 20px;
-        padding: 8px 20px;
-        border-radius: var(--radius-pill);
-        transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    /* Active State for Nav */
+    .nav-icon { font-size: 20px; padding: 8px 20px; border-radius: var(--radius-pill); transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
     .nav-item.active { color: var(--text-primary); }
-    .nav-item.active .nav-icon { 
-        background: var(--accent-bg);
-        color: var(--accent-color);
-    }
+    .nav-item.active .nav-icon { background: var(--accent-bg); color: var(--accent-color); }
 
-    /* --- SIDE DRAWER (MENU) --- */
-    .menu-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
-        z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s;
+    .menu-overlay { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); 
+        backdrop-filter: blur(5px); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s;
     }
     .menu-overlay.active { opacity: 1; visibility: visible; }
     
     .side-drawer {
-        position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
-        background: rgba(18, 18, 22, 0.85);
-        backdrop-filter: var(--glass-blur);
-        -webkit-backdrop-filter: var(--glass-blur);
-        border-left: 1px solid var(--glass-border);
-        z-index: 1001; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        padding: 24px; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-        overflow-y: auto;
+        position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: rgba(18, 18, 22, 0.85);
+        backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+        border-left: 1px solid var(--glass-border); z-index: 1001; transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        padding: 24px; box-shadow: -10px 0 30px rgba(0,0,0,0.5); overflow-y: auto;
     }
     .side-drawer.active { right: 0; }
     
@@ -344,7 +198,6 @@ HTML_TEMPLATE = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Utility Tools</title>
-    <!-- FontAwesome for Professional Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     """ + BASE_CSS + """
 </head>
@@ -377,22 +230,10 @@ HTML_TEMPLATE = """
     <div class="drawer-section">
         <h3>Contact Us</h3>
         <ul class="contact-list">
-            <li>
-                <i class="fa-solid fa-user-shield"></i>
-                <span>Developer: Rehan</span>
-            </li>
-            <li>
-                <i class="fa-solid fa-phone"></i>
-                <span>+91 8271162035</span>
-            </li>
-            <li>
-                <i class="fa-solid fa-envelope"></i>
-                <span style="font-size: 12px; word-break: break-all;">rehanalam8969208@gmail.com</span>
-            </li>
-            <li>
-                <i class="fa-brands fa-telegram"></i>
-                <a href="https://t.me/REHAN_OWNER" target="_blank">t.me/REHAN_OWNER</a>
-            </li>
+            <li><i class="fa-solid fa-user-shield"></i><span>Developer: Rehan</span></li>
+            <li><i class="fa-solid fa-phone"></i><span>+91 8271162035</span></li>
+            <li><i class="fa-solid fa-envelope"></i><span style="font-size: 12px; word-break: break-all;">rehanalam8969208@gmail.com</span></li>
+            <li><i class="fa-brands fa-telegram"></i><a href="https://t.me/REHAN_OWNER" target="_blank">t.me/REHAN_OWNER</a></li>
         </ul>
     </div>
 </div>
@@ -400,27 +241,14 @@ HTML_TEMPLATE = """
 <!-- MAIN CONTENT -->
 <div class="content">
     {% if active_tab == 'stego' %}
-    <!-- STEGO MODULE -->
     <div class="module-card">
         <div class="module-header">
             <div class="module-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="module-title"><h2>Steganography</h2><p>Hide or Extract Data</p></div>
         </div>
         <form method="POST" action="/stego" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Select Image</label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fa-regular fa-image"></i></span>
-                    <input type="file" name="image" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Secret Message</label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fa-regular fa-comment-dots"></i></span>
-                    <input type="text" name="message" placeholder="Enter payload...">
-                </div>
-            </div>
+            <div class="form-group"><label>Select Image</label><div class="input-wrapper"><span class="input-icon"><i class="fa-regular fa-image"></i></span><input type="file" name="image" required></div></div>
+            <div class="form-group"><label>Secret Message</label><div class="input-wrapper"><span class="input-icon"><i class="fa-regular fa-comment-dots"></i></span><input type="text" name="message" placeholder="Enter payload..."></div></div>
             <div class="radio-group">
                 <label><input type="radio" name="action" value="hide" checked><span>Hide Data</span></label>
                 <label><input type="radio" name="action" value="extract"><span>Extract Data</span></label>
@@ -433,27 +261,14 @@ HTML_TEMPLATE = """
     </div>
     
     {% elif active_tab == 'glitch' %}
-    <!-- GLITCH MODULE -->
     <div class="module-card">
         <div class="module-header">
             <div class="module-icon"><i class="fa-solid fa-bolt"></i></div>
             <div class="module-title"><h2>Glitch Module</h2><p>Corrupt or Restore Pixels</p></div>
         </div>
         <form method="POST" action="/glitch" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Encryption Key</label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fa-solid fa-key"></i></span>
-                    <input type="text" name="key" placeholder="Enter security key..." required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Select Image</label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fa-regular fa-image"></i></span>
-                    <input type="file" name="image" required>
-                </div>
-            </div>
+            <div class="form-group"><label>Encryption Key</label><div class="input-wrapper"><span class="input-icon"><i class="fa-solid fa-key"></i></span><input type="text" name="key" placeholder="Enter security key..." required></div></div>
+            <div class="form-group"><label>Select Image</label><div class="input-wrapper"><span class="input-icon"><i class="fa-regular fa-image"></i></span><input type="file" name="image" required></div></div>
             <div class="radio-group">
                 <label><input type="radio" name="action" value="glitch" checked><span>Glitch</span></label>
                 <label><input type="radio" name="action" value="restore"><span>Restore</span></label>
@@ -466,28 +281,19 @@ HTML_TEMPLATE = """
     </div>
 
     {% elif active_tab == 'share' %}
-    <!-- FILE SHARE MODULE -->
     <div class="module-card">
         <div class="module-header">
             <div class="module-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
             <div class="module-title"><h2>File Share</h2><p>Secure File Transfer (20MB)</p></div>
         </div>
         <form method="POST" action="/upload" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Select File</label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fa-regular fa-folder-open"></i></span>
-                    <input type="file" name="file" required>
-                </div>
-            </div>
+            <div class="form-group"><label>Select File</label><div class="input-wrapper"><span class="input-icon"><i class="fa-regular fa-folder-open"></i></span><input type="file" name="file" required></div></div>
             <button type="submit" class="action-btn">Upload & Generate Link</button>
         </form>
         {% if share_link %}
         <div class="result-box">
             <div style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">Link Generated Successfully:</div>
-            <div style="background:rgba(0,0,0,0.4); padding:16px; word-break:break-all; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
-                <a href="{{ share_link }}" target="_blank" style="color:var(--accent-color); text-decoration:none; font-weight:500;">{{ share_link }}</a>
-            </div>
+            <div style="background:rgba(0,0,0,0.4); padding:16px; word-break:break-all; border-radius:12px; border:1px solid rgba(255,255,255,0.05);"><a href="{{ share_link }}" target="_blank" style="color:var(--accent-color); text-decoration:none; font-weight:500;">{{ share_link }}</a></div>
             <div style="font-size:12px; color:var(--text-secondary); margin-top:10px;"><i class="fa-solid fa-clock-rotate-left"></i> One-Time Download Link</div>
         </div>
         {% endif %}
@@ -512,7 +318,6 @@ HTML_TEMPLATE = """
 </div>
 
 <script>
-    // Script for Side Drawer Menu
     function toggleMenu() {
         const overlay = document.getElementById('menuOverlay');
         const drawer = document.getElementById('sideDrawer');
@@ -549,7 +354,7 @@ def index():
         tab = 'stego'
     return render_template_string(HTML_TEMPLATE, active_tab=tab)
 
-# STEGO
+# STEGO (FIXED LOGIC)
 @app.route('/stego', methods=['POST'])
 def stego():
     action = request.form.get('action')
@@ -578,7 +383,7 @@ def stego():
                 else: break
             if data_index >= len(binary_msg): break
         img_io = io.BytesIO()
-        if original_format in ['jpg', 'jpeg']: img.save(img_io, 'JPEG', quality=85); mime = 'image/jpeg'
+        if original_format in ['jpg', 'jpeg']: img.save(img_io, 'JPEG', quality=100); mime = 'image/jpeg' # 100% Quality
         else: img.save(img_io, 'PNG'); mime = 'image/png'
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
@@ -594,7 +399,7 @@ def stego():
                     return render_template_string(HTML_TEMPLATE, active_tab='stego', result=f"Decrypted Data:<br><span style='color:var(--accent-color); font-size:18px; font-weight:600; margin-top:10px; display:inline-block;'>\"{bin_to_text(binary_data[:-16])}\"</span>", result_type='stego')
         return render_template_string(HTML_TEMPLATE, active_tab='stego', result="Error: No hidden data found.", result_type='stego')
 
-# GLITCH
+# GLITCH (FORCED PNG FOR LOSSLESS QUALITY)
 @app.route('/glitch', methods=['POST'])
 def glitch():
     action = request.form.get('action')
@@ -602,8 +407,6 @@ def glitch():
     key = request.form.get('key', '')
     if not file or not key: return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="Error: Missing input.", result_type='glitch')
     
-    original_format = file.filename.split('.')[-1].lower()
-    if original_format not in ['jpg', 'jpeg', 'png']: original_format = 'png'
     img = Image.open(file).convert('RGB')
     
     if action == 'glitch':
@@ -615,12 +418,16 @@ def glitch():
         for i, new_idx in enumerate(indices): new_pixels[new_idx] = pixels[i]
         new_img = Image.new('RGB', (img.width, img.height))
         new_img.putdata(new_pixels)
+        
+        # FORCE PNG SAVE (100% Quality, No Compression)
         img_io = io.BytesIO()
-        if original_format in ['jpg', 'jpeg']: new_img.save(img_io, 'JPEG', quality=85); mime = 'image/jpeg'
-        else: new_img.save(img_io, 'PNG'); mime = 'image/png'
+        new_img.save(img_io, 'PNG') 
+        mime = 'image/png'
+        
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="Success: Pixels corrupted.", download_link=f"data:{mime};base64,{b64}", result_type='glitch')
+        
     elif action == 'restore':
         glitched_pixels = list(img.getdata())
         random.seed(key)
@@ -630,9 +437,12 @@ def glitch():
         for i, new_idx in enumerate(indices): original_pixels[i] = glitched_pixels[new_idx]
         new_img = Image.new('RGB', (img.width, img.height))
         new_img.putdata(original_pixels)
+        
+        # FORCE PNG SAVE (100% Quality, No Compression)
         img_io = io.BytesIO()
-        if original_format in ['jpg', 'jpeg']: new_img.save(img_io, 'JPEG', quality=85); mime = 'image/jpeg'
-        else: new_img.save(img_io, 'PNG'); mime = 'image/png'
+        new_img.save(img_io, 'PNG') 
+        mime = 'image/png'
+        
         img_io.seek(0)
         b64 = base64.b64encode(img_io.getvalue()).decode()
         return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="Success: Image restored.", download_link=f"data:{mime};base64,{b64}", result_type='glitch')
@@ -642,12 +452,10 @@ def glitch():
 def upload():
     file = request.files.get('file')
     if not file: return render_template_string(HTML_TEMPLATE, active_tab='share', share_link="Error: No file selected.")
-    
     ext = file.filename.split('.')[-1]
     filename = random_name() + "." + ext
     filepath = os.path.join(UPLOAD_FOLDER, filename)
     file.save(filepath)
-    
     host = request.host_url.rstrip('/')
     link = f"{host}/download/{filename}"
     return render_template_string(HTML_TEMPLATE, active_tab='share', share_link=link)
