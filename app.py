@@ -133,7 +133,7 @@ HTML_TEMPLATE = """
             <button type="submit" class="action-btn">Execute Protocol</button>
         </form>
         {% if result and result_type == 'stego' %}
-        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
+        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download="secured_image.png" class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
         {% endif %}
     </div>
     
@@ -165,7 +165,7 @@ HTML_TEMPLATE = """
             <button type="submit" class="action-btn">Apply Effect</button>
         </form>
         {% if result and result_type == 'glitch' %}
-        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
+        <div class="result-box"><div>{{ result|safe }}</div>{% if download_link %}<a href="{{ download_link }}" download="glitched_image.png" class="download-btn"><i class="fa-solid fa-download"></i> Save Image</a>{% endif %}</div>
         {% endif %}
     </div>
     
@@ -254,6 +254,8 @@ def stego():
     
     try:
         img = Image.open(file).convert('RGB')
+        # FIX: Resize image so it doesn't crash the server/browser memory
+        img.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
     except:
         return render_template_string(HTML_TEMPLATE, active_tab='stego', result="<span style='color:#ff4757;'>Error: Invalid Image File.</span>", result_type='stego')
     
@@ -326,6 +328,8 @@ def glitch():
     
     try:
         img = Image.open(file).convert('RGB')
+        # FIX: Resize image so it doesn't crash the server/browser memory
+        img.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
     except:
         return render_template_string(HTML_TEMPLATE, active_tab='glitch', result="<span style='color:#ff4757;'>Error: Invalid Image File.</span>", result_type='glitch')
     
